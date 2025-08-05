@@ -2,10 +2,25 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+    
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var questionTitleLabel: UILabel!
+    @IBOutlet weak var questionLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        noButton.titleLabel?.font = UIFont(name: "YS Display-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YS Display-Medium", size: 20)
+        questionTitleLabel.font = UIFont(name: "YS Display-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YS Display-Bold", size: 23)
+        questionLabel.textAlignment = .center
+        questionLabel.numberOfLines = 2
+        
+       }
+        
     }
-}
+
 
 /*
  Mock-данные
