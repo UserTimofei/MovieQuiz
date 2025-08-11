@@ -21,35 +21,35 @@
                                 <rect key="frame" x="20" y="58" width="374" height="722"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hre-0G-1tl">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="6"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sE-9U-8JG" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="353.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="363.5" height="6"/>
                                                 <color key="backgroundColor" name="YP Black"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <color key="highlightedColor" name="YP White"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55T-Zy-qCP" userLabel="Index Label">
-                                                <rect key="frame" x="353.5" y="0.0" width="20.5" height="20.5"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
+                                                <rect key="frame" x="363.5" y="0.0" width="10.5" height="6"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jyz-v8-P3d" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="40.5" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="26" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="jyz-v8-P3d" secondAttribute="height" multiplier="2:3" id="a1j-xO-BmL"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18R-RO-Zm6" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="621.5" width="374" height="20.5"/>
-                                        <color key="backgroundColor" name="YP White"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" name="YP Black"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18R-RO-Zm6" userLabel="Question Label">
+                                        <rect key="frame" x="0.0" y="607" width="374" height="35"/>
+                                        <color key="backgroundColor" name="YP Black"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
+                                        <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="5Dm-vP-K74">
@@ -58,7 +58,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NlR-MD-8RD" userLabel="Yes Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
                                                     <color key="titleColor" name="YP Black"/>
@@ -68,6 +68,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ycw-9N-60m"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zsB-vW-1TA" userLabel="No Button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -75,7 +78,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="2rZ-rf-TV6"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет ">
                                                     <color key="titleColor" name="YP Black"/>
@@ -85,6 +88,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="efn-tZ-4KN"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -104,6 +110,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="imageView" destination="jyz-v8-P3d" id="Zbv-tY-1j8"/>
+                        <outlet property="indexLabel" destination="55T-Zy-qCP" id="rch-rs-QVx"/>
                         <outlet property="noButton" destination="zsB-vW-1TA" id="7qD-xS-LK4"/>
                         <outlet property="questionLabel" destination="18R-RO-Zm6" id="RTF-fI-OL3"/>
                         <outlet property="questionTitleLabel" destination="4sE-9U-8JG" id="PiI-lF-NaB"/>
