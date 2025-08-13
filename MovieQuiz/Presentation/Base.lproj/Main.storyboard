@@ -28,10 +28,11 @@
                                                 <color key="backgroundColor" name="YP Black"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <color key="textColor" name="YP White"/>
-                                                <color key="highlightedColor" name="YP White"/>
+                                                <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55T-Zy-qCP" userLabel="Index Label">
                                                 <rect key="frame" x="363.5" y="0.0" width="10.5" height="6"/>
+                                                <color key="backgroundColor" name="YP Black"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="5"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
