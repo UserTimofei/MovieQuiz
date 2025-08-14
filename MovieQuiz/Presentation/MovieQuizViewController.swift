@@ -12,15 +12,41 @@ final class MovieQuizViewController: UIViewController {
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        guard !isProcessingAnswer else { return }
+        isProcessingAnswer = true
+        disableButtons()
+        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
+        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        guard !isProcessingAnswer else { return }
+        isProcessingAnswer = true
+        disableButtons()
+        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
+
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    private var isProcessingAnswer = false
+    
+    private func disableButtons() {
+        yesButton.alpha = 0.5
+        noButton.alpha = 0.5
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+    }
+    private func enableButton() {
+        yesButton.isEnabled = true
+        yesButton.alpha = 1.0
+        
+        noButton.isEnabled = true
+        noButton.alpha = 1.0
     }
     
     override func viewDidLoad() {
@@ -58,13 +84,13 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
 
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
@@ -96,7 +122,9 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
+            self.isProcessingAnswer = false
+            self.enableButton()
         }
     }
     
@@ -110,7 +138,8 @@ final class MovieQuizViewController: UIViewController {
         
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
+            self.isProcessingAnswer = false
+            self.enableButton()
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
@@ -137,72 +166,3 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 }
-
-
-    
-
-
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-*/
