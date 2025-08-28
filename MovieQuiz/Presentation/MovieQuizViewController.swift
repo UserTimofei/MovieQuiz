@@ -185,13 +185,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
             let bestGame = statisticService.bestGame
             let bestGameDate = bestGame.date.dateTimeString
-            
+            let gamesCount = statisticService.gamesCount
             // Берёт текст результата у presenter
             let message = """
                 \(presenter?.makeResultsMessage() ?? "Игра окончена")
+                Количество сыгранных квизов: \(gamesCount)
+                Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGameDate))
                 Средняя точность: \(accuracy)%
-                Рекорд: \(bestGame.correct) из \(bestGame.total)
-                Дата рекорда: \(bestGameDate)
                 """
             
             // Создаёт модель алерта: что показать
