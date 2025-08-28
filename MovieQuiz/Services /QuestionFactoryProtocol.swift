@@ -8,5 +8,6 @@
 import Foundation
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion() 
+    // Метод запросить следующий вопрос
+    func requestNextQuestion()
 }

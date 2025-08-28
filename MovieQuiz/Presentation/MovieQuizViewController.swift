@@ -1,11 +1,16 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
     private var alertPresenter = AlertPresenter()
     private var presenter: MovieQuizPresenterProtocol?
+    
     private let questionsAmount: Int = 10
+    
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    
+    private var statisticService: StatisticServiceProtocol!
     // MARK: - Lifecycle
     
     @IBOutlet private weak var yesButton: UIButton!
@@ -19,7 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         // Проверяет, не обрабатывается ли уже ответ
         guard !isProcessingAnswer else { return }
-        // Запоминает ответ 
+        // Запоминает ответ
         isProcessingAnswer = true
         // Отключает кнопки (чтобы нельзя было нажать дважды)
         disableButtons()
@@ -35,12 +40,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         disableButtons()
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = false
-
+        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -51,17 +57,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         // Создаем Фабрику вопросов QuestionFactory
         let questionFactory = QuestionFactory()
-        // Говорим: Ты, фабрика - я твой делегат. Когда вопрос будет - скажи мне.
+        // Говорим: Ты, фабрика - я твой делегат. Когда вопрос будет - скажи мне
         questionFactory.delegate = self
         self.questionFactory = questionFactory
         // Создаем призентер - он будет готовить текст результата
-        self.presenter = MovieQuizPresenter(questionsAmount: questionsAmount, correctAnswersClosure: {[weak self] in self?.correctAnswers ?? 0
+        self.presenter = MovieQuizPresenter(
+            questionsAmount: questionsAmount,
+            correctAnswersClosure:
+            {[weak self] in self?.correctAnswers ?? 0},
+            restartGameHandler: {[weak self] in
+                guard let self = self else {return}
+                self.restartGame()
             }
         )
         // Запрашиваем первый вопрос - это как "Старт! Давай первый вопрос!"
         self.questionFactory?.requestNextQuestion()
-    }
     
+        statisticService = StatisticService()
+    }
+   
     private var isProcessingAnswer = false
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -166,31 +180,50 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // Метод отвечает за отоборажения алерта с результатами после прохождения всех вопросов
         private func show(result: QuizResultsViewModel) {
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+            let bestGame = statisticService.bestGame
+            let bestGameDate = bestGame.date.dateTimeString
+            
             // Берёт текст результата у presenter
-            let message = presenter?.makeResultsMessage() ?? "Игра окончена"
+            let message = """
+                \(presenter?.makeResultsMessage() ?? "Игра окончена")
+                Средняя точность: \(accuracy)%
+                Рекорд: \(bestGame.correct) из \(bestGame.total)
+                Дата рекорда: \(bestGameDate)
+                """
+            
             // Создаёт модель алерта: что показать
             // В замыкании — что делать при нажатии кнопки
-            let model = AlertModel(title: result.title,
-                                   message: message,
-                                   buttonText: result.buttonText) { [weak self] in
+            let model = AlertModel(
+                title: result.title,
+                message: message,
+                buttonText: result.buttonText
+            ) { [weak self] in
                 guard let self = self else { return }
-                
-                self.presenter = MovieQuizPresenter(questionsAmount: self.questionsAmount, correctAnswersClosure: {[weak self] in self?.correctAnswers ?? 0 }) ///Это значит:
-               /// "Когда нужно узнать количество правильных ответов — спроси у контроллера"
+
                 self.presenter?.restartGame()
                 
-                let newFactory = QuestionFactory()
-                newFactory.delegate = self
-                self.questionFactory = newFactory
-                
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                self.isProcessingAnswer = false
-                self.enableButton()
-                
-                self.questionFactory?.requestNextQuestion()
-            }
+                }
             alertPresenter.show(in: self, model: model)
+        }
+        private func restartGame() {
+            // Сбрасываем счётчики
+            currentQuestionIndex = 0
+            correctAnswers = 0
+            isProcessingAnswer = false
+            
+            // Пересоздаём фабрику вопросов
+            let newFactory = QuestionFactory()
+            newFactory.delegate = self
+            questionFactory = newFactory
+            
+            // Включаем кнопки
+            enableButton()
+            
+            // Запрашиваем первый вопрос
+            questionFactory?.requestNextQuestion()
         }
 }
 /// viewDidLoad — точка входа. Здесь всё начинается

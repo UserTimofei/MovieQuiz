@@ -27,4 +27,5 @@ final class AlertPresenter {
         /// Показывает алерт: показывает алерт в переданном контроллере, с анимацией
         vc.present(alert, animated: true, completion: nil)
     }
+    
 }

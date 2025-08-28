@@ -11,7 +11,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
     // Класс поставщик вопросов
     // Он только хранит вопросы и выдаёт следующий по запросу
     
-    // Чтобы сообщить контроллеру: "Вопрос готов!"
+    // Чтобы сообщить контроллеру: "Вопрос готов!" (получать вопроса главный контройлер)
     weak var delegate: QuestionFactoryDelegate?
     
     // Список всех вопросов (жёстко задан)
@@ -44,7 +44,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
         /// Сообщаем делегату
         delegate?.didReceiveNextQuestion(question: question)
         ///Это связь с контроллером.
-        ///"Эй, MovieQuizViewController, держи вопрос!"
+        ///"MovieQuizViewController, держи вопрос!"
     }
     
 }

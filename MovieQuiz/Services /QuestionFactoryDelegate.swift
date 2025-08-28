@@ -7,5 +7,6 @@
 
 import Foundation
 protocol QuestionFactoryDelegate: AnyObject {
+    // Метод получил следующий вопрос
     func didReceiveNextQuestion(question: QuizQuestion?)
 }

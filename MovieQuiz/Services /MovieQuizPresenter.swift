@@ -17,16 +17,19 @@ final class MovieQuizPresenter: MovieQuizPresenterProtocol {
     // Замыкание: "Спроси у контроллера, сколько правильных ответов"
     private let correctAnswersClosure: () -> Int
     
-    init(questionsAmount: Int, correctAnswersClosure: @escaping () -> Int) {
+    private let restartGameHandler: () -> Void
+    init(questionsAmount: Int, correctAnswersClosure: @escaping () -> Int, restartGameHandler: @escaping () -> Void) {
         self.questionsAmount = questionsAmount
         self.correctAnswersClosure = correctAnswersClosure
+        self.restartGameHandler = restartGameHandler
     }
+
     // Готовит строку: "Ваш результат: 7/10"
     func makeResultsMessage() -> String {
         let correсt = correctAnswersClosure()
         return "Ваш результат: \(correсt)/\(questionsAmount)"
     }
     func restartGame() {
-        
+        restartGameHandler()
     }
 }
