@@ -42,6 +42,7 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jyz-v8-P3d" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="26" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Poster"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="jyz-v8-P3d" secondAttribute="height" multiplier="2:3" id="a1j-xO-BmL"/>
                                         </constraints>
