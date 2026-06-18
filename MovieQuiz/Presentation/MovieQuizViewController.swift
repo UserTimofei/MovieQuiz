@@ -13,16 +13,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var statisticService: StatisticServiceProtocol!
     // MARK: - Lifecycle
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var yesButton: UIButton!
-    @IBOutlet private weak var noButton: UIButton!
-    @IBOutlet private weak var questionTitleLabel: UILabel!
-    @IBOutlet private weak var questionLabel: UILabel!
-    @IBOutlet private weak var indexLabel: UILabel!
-    @IBOutlet private weak var imageView: UIImageView!
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private let yesButton = UIButton(type: .system)
+    private let noButton = UIButton(type: .system)
+    private let questionTitleLabel = UILabel()
+    private let questionLabel = UILabel()
+    private let indexLabel = UILabel()
+    private let imageView = UIImageView()
     
     
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+    @objc private func yesButtonClicked(_ sender: UIButton) {
         // Проверяет, не обрабатывается ли уже ответ
         guard !isProcessingAnswer else { return }
         // Запоминает ответ
@@ -35,7 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
+    @objc private func noButtonClicked(_ sender: UIButton) {
         guard !isProcessingAnswer else { return }
         isProcessingAnswer = true
         disableButtons()
@@ -44,19 +44,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
 //        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
+
+    override func loadView() {
+        let rootView = UIView()
+        rootView.backgroundColor = UIColor(named: "YP Black") ?? .black
+        view = rootView
+
+        setupLayout()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        questionLabel.textAlignment = .center
-        questionLabel.numberOfLines = 2
+        configureView()
         
-        imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticService()
         // Создаем Фабрику вопросов QuestionFactory
@@ -78,6 +79,83 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var isProcessingAnswer = false
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    
+    private func setupLayout() {
+        let headerStackView = UIStackView(arrangedSubviews: [questionTitleLabel, indexLabel])
+        headerStackView.axis = .horizontal
+
+        let buttonStackView = UIStackView(arrangedSubviews: [yesButton, noButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 20
+
+        let contentStackView = UIStackView(arrangedSubviews: [
+            headerStackView,
+            imageView,
+            questionLabel,
+            buttonStackView
+        ])
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 20
+
+        [contentStackView, activityIndicator].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            contentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            contentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            contentStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 2.0 / 3.0),
+
+            buttonStackView.heightAnchor.constraint(equalToConstant: 60),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+
+    private func configureView() {
+        questionTitleLabel.text = "Вопрос:"
+        indexLabel.text = "1/10"
+        questionLabel.text = "Рейтинг этого фильма меньше, чем 5?"
+
+        yesButton.setTitle("Да", for: .normal)
+        noButton.setTitle("Нет ", for: .normal)
+
+        let blackColor = UIColor(named: "YP Black") ?? .black
+        let whiteColor = UIColor(named: "YP White") ?? .white
+
+        [questionTitleLabel, indexLabel, questionLabel].forEach {
+            $0.backgroundColor = blackColor
+            $0.textColor = whiteColor
+        }
+
+        [yesButton, noButton].forEach {
+            $0.backgroundColor = whiteColor
+            $0.setTitleColor(blackColor, for: .normal)
+            $0.layer.cornerRadius = 15
+        }
+
+        yesButton.addTarget(self, action: #selector(yesButtonClicked), for: .touchUpInside)
+        noButton.addTarget(self, action: #selector(noButtonClicked), for: .touchUpInside)
+
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        questionLabel.textAlignment = .center
+        questionLabel.numberOfLines = 2
+        
+        imageView.backgroundColor = whiteColor
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 20
+    }
     
     private func enableButton() {
         yesButton.isEnabled = true
@@ -260,5 +338,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 /// show(result:) — конец и перезапуск
 /// Презентер — не UI, а подготовка данных
 /// Делегат — это не вы, а договор: "Сделай и скажи мне"
-
 
